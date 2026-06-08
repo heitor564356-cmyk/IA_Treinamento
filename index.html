@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema da Evolução</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- TELA DE CRIAÇÃO DE JOGADOR -->
+<div id="creation-screen" class="screen active">
+  <div class="creation-bg"></div>
+  <div class="creation-container">
+    <div class="system-logo">
+      <div class="logo-glow">SISTEMA</div>
+      <div class="logo-subtitle">DA EVOLUÇÃO</div>
+    </div>
+    <div class="creation-card" id="creation-card">
+      <!-- Step 1 -->
+      <div class="creation-step active" id="step-1">
+        <div class="step-header">[SISTEMA] Novo Jogador Detectado</div>
+        <p class="step-desc">Iniciando protocolo de registro...</p>
+        <div class="input-group">
+          <label>NOME DO JOGADOR</label>
+          <input type="text" id="input-name" placeholder="Digite seu nome" maxlength="30" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label>IDADE</label>
+          <input type="number" id="input-age" placeholder="Sua idade" min="10" max="99">
+        </div>
+        <button class="btn-system" onclick="goStep(2)">CONTINUAR →</button>
+      </div>
+      <!-- Step 2 -->
+      <div class="creation-step" id="step-2">
+        <div class="step-header">[SISTEMA] Defina seu Objetivo Principal</div>
+        <p class="step-desc">Sua escolha moldará missões, títulos e progressão.</p>
+        <div class="objectives-grid">
+          <div class="objective-card" data-obj="Físico" onclick="selectObjective(this)">
+            <span class="obj-icon">⚔️</span>
+            <span class="obj-name">Físico</span>
+          </div>
+          <div class="objective-card" data-obj="Estética" onclick="selectObjective(this)">
+            <span class="obj-icon">✨</span>
+            <span class="obj-name">Estética</span>
+          </div>
+          <div class="objective-card" data-obj="Foco" onclick="selectObjective(this)">
+            <span class="obj-icon">🎯</span>
+            <span class="obj-name">Foco</span>
+          </div>
+          <div class="objective-card" data-obj="Disciplina" onclick="selectObjective(this)">
+            <span class="obj-icon">🔩</span>
+            <span class="obj-name">Disciplina</span>
+          </div>
+          <div class="objective-card" data-obj="Estudos" onclick="selectObjective(this)">
+            <span class="obj-icon">📚</span>
+            <span class="obj-name">Estudos</span>
+          </div>
+          <div class="objective-card" data-obj="Saúde" onclick="selectObjective(this)">
+            <span class="obj-icon">❤️</span>
+            <span class="obj-name">Saúde</span>
+          </div>
+          <div class="objective-card" data-obj="Social" onclick="selectObjective(this)">
+            <span class="obj-icon">🌐</span>
+            <span class="obj-name">Social</span>
+          </div>
+          <div class="objective-card" data-obj="Liderança" onclick="selectObjective(this)">
+            <span class="obj-icon">👑</span>
+            <span class="obj-name">Liderança</span>
+          </div>
+          <div class="objective-card featured" data-obj="Desenvolvimento Completo" onclick="selectObjective(this)">
+            <span class="obj-icon">♾️</span>
+            <span class="obj-name">Desenvolvimento Completo</span>
+          </div>
+        </div>
+        <button class="btn-system" id="btn-create" onclick="createPlayer()" disabled>INICIAR EVOLUÇÃO ⚡</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TELA PRINCIPAL DO SISTEMA -->
+<div id="main-screen" class="screen">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-s">S</span><span class="logo-rest">ISTEMA</span>
+    </div>
+    <div class="nav-items">
+      <div class="nav-item active" onclick="showSection('dashboard')" data-section="dashboard">
+        <span class="nav-icon">⬡</span><span class="nav-label">Dashboard</span>
+      </div>
+      <div class="nav-item" onclick="showSection('profile')" data-section="profile">
+        <span class="nav-icon">◈</span><span class="nav-label">Perfil</span>
+      </div>
+      <div class="nav-item" onclick="showSection('missions')" data-section="missions">
+        <span class="nav-icon">◉</span><span class="nav-label">Missões</span>
+        <span class="nav-badge" id="badge-missions">0</span>
+      </div>
+      <div class="nav-item" onclick="showSection('achievements')" data-section="achievements">
+        <span class="nav-icon">◆</span><span class="nav-label">Conquistas</span>
+      </div>
+      <div class="nav-item" onclick="showSection('rankings')" data-section="rankings">
+        <span class="nav-icon">◈</span><span class="nav-label">Rankings</span>
+      </div>
+      <div class="nav-item" onclick="showSection('legacy')" data-section="legacy">
+        <span class="nav-icon">◉</span><span class="nav-label">Legado</span>
+      </div>
+      <div class="nav-item" onclick="showSection('nofap')" data-section="nofap">
+        <span class="nav-icon">◈</span><span class="nav-label">NO FAP</span>
+      </div>
+      <div class="nav-item" onclick="showSection('reports')" data-section="reports">
+        <span class="nav-icon">◆</span><span class="nav-label">Relatórios</span>
+      </div>
+    </div>
+    <div class="sidebar-player-mini" id="sidebar-player-mini">
+      <div class="mini-rank" id="mini-rank">D</div>
+      <div class="mini-info">
+        <div class="mini-name" id="mini-name">—</div>
+        <div class="mini-level" id="mini-level">Nível 1</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main-content">
+
+    <!-- NOTIFICAÇÕES -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- ── DASHBOARD ── -->
+    <section id="section-dashboard" class="section active">
+      <div class="section-header">
+        <h1 class="section-title">DASHBOARD</h1>
+        <div class="system-date" id="system-date"></div>
+      </div>
+
+      <!-- Cards topo -->
+      <div class="dashboard-top">
+        <div class="player-card">
+          <div class="player-card-bg"></div>
+          <div class="player-rank-badge" id="dash-rank">D</div>
+          <div class="player-info">
+            <div class="player-name" id="dash-name">—</div>
+            <div class="player-title" id="dash-title">Iniciante</div>
+            <div class="player-objective" id="dash-objective">—</div>
+          </div>
+          <div class="player-stats-row">
+            <div class="pstat">
+              <div class="pstat-val" id="dash-level">1</div>
+              <div class="pstat-label">NÍVEL</div>
+            </div>
+            <div class="pstat">
+              <div class="pstat-val" id="dash-gold">0</div>
+              <div class="pstat-label">OURO</div>
+            </div>
+            <div class="pstat">
+              <div class="pstat-val" id="dash-missions">0</div>
+              <div class="pstat-label">MISSÕES</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="xp-card">
+          <div class="xp-label">EXPERIÊNCIA</div>
+          <div class="xp-values">
+            <span id="dash-xp">0</span> / <span id="dash-xp-next">500</span> XP
+          </div>
+          <div class="xp-bar-wrap">
+            <div class="xp-bar-fill" id="xp-bar-fill"></div>
+            <div class="xp-bar-glow"></div>
+          </div>
+          <div class="rank-progress-label">Progresso de Rank</div>
+          <div class="rank-bar-wrap">
+            <div class="rank-bar-fill" id="rank-bar-fill"></div>
+          </div>
+          <div class="rank-progress-text" id="rank-progress-text">Rank D → D+</div>
+        </div>
+
+        <div class="streak-card">
+          <div class="streak-fire">🔥</div>
+          <div class="streak-number" id="dash-streak">0</div>
+          <div class="streak-label">DIAS CONSECUTIVOS</div>
+          <div class="streak-details">
+            <div class="sdet"><span id="dash-total-days">0</span><small>Total</small></div>
+            <div class="sdet"><span id="dash-best-streak">0</span><small>Recorde</small></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Atributos -->
+      <div class="attributes-section">
+        <div class="section-sub-title">[ATRIBUTOS]</div>
+        <div class="attributes-grid" id="attributes-grid"></div>
+        <div class="attr-points-bar" id="attr-points-bar" style="display:none">
+          <span id="attr-points-text">0 pontos disponíveis</span>
+          <button class="btn-small" onclick="showSection('profile')">DISTRIBUIR</button>
+        </div>
+      </div>
+
+      <!-- Sistema AI Messages -->
+      <div class="system-messages-section">
+        <div class="section-sub-title">[SISTEMA]</div>
+        <div class="system-messages-list" id="system-messages-list"></div>
+      </div>
+
+      <!-- Missões rápidas do dia -->
+      <div class="quick-missions-section">
+        <div class="section-sub-title">[MISSÕES DO DIA]</div>
+        <div class="quick-missions-list" id="quick-missions-list"></div>
+        <button class="btn-view-all" onclick="showSection('missions')">VER TODAS AS MISSÕES →</button>
+      </div>
+    </section>
+
+    <!-- ── PERFIL ── -->
+    <section id="section-profile" class="section">
+      <div class="section-header">
+        <h1 class="section-title">PERFIL</h1>
+      </div>
+      <div class="profile-content">
+        <div class="profile-left">
+          <div class="profile-avatar-card">
+            <div class="avatar-rank" id="profile-rank">D</div>
+            <div class="avatar-circle">
+              <span id="profile-initial">?</span>
+            </div>
+            <div class="avatar-name" id="profile-name">—</div>
+            <div class="avatar-title" id="profile-title-display">—</div>
+            <div class="avatar-level" id="profile-level-display">Nível 1</div>
+          </div>
+          <div class="profile-titles-card">
+            <div class="card-title">[TÍTULOS]</div>
+            <div class="titles-list" id="profile-titles-list"></div>
+          </div>
+        </div>
+        <div class="profile-right">
+          <div class="attributes-full-card">
+            <div class="card-title">[ATRIBUTOS]
+              <span class="points-available" id="profile-points-available"></span>
+            </div>
+            <div class="attributes-full-list" id="attributes-full-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MISSÕES ── -->
+    <section id="section-missions" class="section">
+      <div class="section-header">
+        <h1 class="section-title">MISSÕES</h1>
+      </div>
+      <div class="missions-tabs">
+        <button class="mission-tab active" onclick="switchMissionTab('daily', this)">DIÁRIAS</button>
+        <button class="mission-tab" onclick="switchMissionTab('weekly', this)">SEMANAIS</button>
+        <button class="mission-tab" onclick="switchMissionTab('monthly', this)">MENSAIS</button>
+        <button class="mission-tab" onclick="switchMissionTab('special', this)">ESPECIAIS</button>
+        <button class="mission-tab" onclick="switchMissionTab('secret', this)">SECRETAS</button>
+      </div>
+      <div class="missions-container" id="missions-container"></div>
+    </section>
+
+    <!-- ── CONQUISTAS ── -->
+    <section id="section-achievements" class="section">
+      <div class="section-header">
+        <h1 class="section-title">CONQUISTAS</h1>
+        <div class="ach-count" id="ach-count">0 / 0</div>
+      </div>
+      <div class="ach-categories" id="ach-categories"></div>
+      <div class="achievements-grid" id="achievements-grid"></div>
+    </section>
+
+    <!-- ── RANKINGS ── -->
+    <section id="section-rankings" class="section">
+      <div class="section-header">
+        <h1 class="section-title">SISTEMA DE RANKS</h1>
+      </div>
+      <div class="rankings-grid" id="rankings-grid"></div>
+    </section>
+
+    <!-- ── LEGADO ── -->
+    <section id="section-legacy" class="section">
+      <div class="section-header">
+        <h1 class="section-title">LEGADO</h1>
+        <p class="section-sub">Toda a sua jornada, registrada para sempre.</p>
+      </div>
+      <div class="legacy-content" id="legacy-content"></div>
+    </section>
+
+    <!-- ── NO FAP ── -->
+    <section id="section-nofap" class="section">
+      <div class="section-header">
+        <h1 class="section-title">MÓDULO NO FAP</h1>
+      </div>
+      <div class="nofap-content" id="nofap-content"></div>
+    </section>
+
+    <!-- ── RELATÓRIOS ── -->
+    <section id="section-reports" class="section">
+      <div class="section-header">
+        <h1 class="section-title">RELATÓRIOS</h1>
+      </div>
+      <div class="report-tabs">
+        <button class="report-tab active" onclick="loadReport('daily', this)">DIÁRIO</button>
+        <button class="report-tab" onclick="loadReport('weekly', this)">SEMANAL</button>
+        <button class="report-tab" onclick="loadReport('monthly', this)">MENSAL</button>
+      </div>
+      <div class="report-content" id="report-content"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MODAL DE LEVEL UP -->
+<div id="levelup-modal" class="modal-overlay">
+  <div class="levelup-card">
+    <div class="levelup-flash"></div>
+    <div class="levelup-text">[SISTEMA]</div>
+    <div class="levelup-big">LEVEL UP!</div>
+    <div class="levelup-level" id="levelup-level">Nível 2</div>
+    <div class="levelup-reward" id="levelup-reward">+3 Pontos de Atributo</div>
+    <button class="btn-system" onclick="closeModal('levelup-modal')">CONTINUAR</button>
+  </div>
+</div>
+
+<!-- MODAL DE RANK UP -->
+<div id="rankup-modal" class="modal-overlay">
+  <div class="rankup-card">
+    <div class="rankup-text">[SISTEMA]</div>
+    <div class="rankup-big">RANK UP!</div>
+    <div class="rankup-rank" id="rankup-rank">C</div>
+    <div class="rankup-desc" id="rankup-desc">Nova classificação registrada.</div>
+    <button class="btn-system" onclick="closeModal('rankup-modal')">CONTINUAR</button>
+  </div>
+</div>
+
+<!-- MODAL DE CONQUISTA -->
+<div id="achievement-modal" class="modal-overlay">
+  <div class="achievement-card">
+    <div class="achievement-text">[SISTEMA]</div>
+    <div class="achievement-big">CONQUISTA!</div>
+    <div class="achievement-icon" id="ach-modal-icon">🏅</div>
+    <div class="achievement-name" id="ach-modal-name">—</div>
+    <button class="btn-system" onclick="closeModal('achievement-modal')">CONTINUAR</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
